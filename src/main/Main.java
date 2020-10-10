@@ -1,13 +1,16 @@
 package main;
 
+import manager.AccountManager;
 import manager.BookingManager;
 import manager.TourManager;
 import model.BookingTour;
 import model.Tour;
+import storage.IOAdminAccount;
 import storage.IOBooking;
 import storage.IOTour;
+import storage.IOUserAccoount;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,19 +18,19 @@ import java.util.regex.Pattern;
 public class Main {
 
     public static int autoTourCode() {
-        int tourCode=0;
+        int tourCode = 0;
         TourManager.tourList = IOTour.read();
-        for (Tour tour: TourManager.tourList
-             ) {
+        for (Tour tour : TourManager.tourList
+        ) {
             tourCode = tour.getTourCode();
         }
         return ++tourCode;
     }
 
     public static int autoBookingCode() {
-        int bookingCode=0;
+        int bookingCode = 0;
         BookingManager.bookingTourList = IOBooking.read();
-        for (BookingTour bookingTour: BookingManager.bookingTourList
+        for (BookingTour bookingTour : BookingManager.bookingTourList
         ) {
             bookingCode = bookingTour.getCodeBooking();
         }
@@ -37,6 +40,18 @@ public class Main {
     public static boolean checkValidate(String regex) {
         Pattern pattern = Pattern.compile("^(0?[1-9]|[12][0-9]|3[01])[\\/\\-](0?[1-9]|1[012])[\\/\\-]\\d{4}$");
         Matcher matcher = pattern.matcher(regex);
+        return matcher.matches();
+    }
+
+    public static boolean checkValidateName(String regex) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9._-]{6,}$");
+        Matcher matcher = pattern.matcher(regex);
+        return matcher.matches();
+    }
+
+    private static boolean checkValidatePass(String password) {
+        Pattern pattern = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}");
+        Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
@@ -223,7 +238,7 @@ public class Main {
                 case 1: {
                     System.out.println("Enter tour name:");
                     String tourName = scanner.nextLine();
-                    int tourTime= setTourTime();
+                    int tourTime = setTourTime();
                     System.out.println("Enter tour information");
                     String tourInformation = scanner.nextLine();
                     System.out.println("Enter tour style:");
@@ -249,12 +264,12 @@ public class Main {
                 }
                 case 2:
                     System.out.println("Enter tour code you want to edit:");
-                    int code=0;
+                    int code = 0;
                     try {
                         code = new Scanner(System.in).nextInt();
-                    new TourManager().edit(code);
-                    j = 2;
-                    }catch (Exception e){
+                        new TourManager().edit(code);
+                        j = 2;
+                    } catch (Exception e) {
                         System.out.println("Not Found");
                         menuTour();
                     }
@@ -262,12 +277,13 @@ public class Main {
                 case 3:
                     System.out.println("Enter tour code you want to remove: ");
                     int codeTour;
-                    try{
-                        codeTour = scanner.nextInt();
-                    new TourManager().remove(codeTour);
-                    j = 3;
-                    }catch (Exception e){
+                    try {
+                        codeTour = new Scanner(System.in).nextInt();
+                        new TourManager().remove(codeTour);
                         System.out.println("Not Found");
+                        j = 3;
+                    } catch (Exception e) {
+                        System.out.println("remove successfully");
                         menuTour();
                     }
                     break;
@@ -326,11 +342,11 @@ public class Main {
                 case 1:
                     System.out.println("enter code booking tour you want to remove");
                     int codebooking;
-                    try{
+                    try {
                         codebooking = scanner.nextInt();
-                    new BookingManager().remove(codebooking);
-                    count = 1;
-                    }catch (Exception e){
+                        new BookingManager().remove(codebooking);
+                        count = 1;
+                    } catch (Exception e) {
                         System.out.println("Not Found!");
                         menuBooking();
                     }
@@ -338,11 +354,11 @@ public class Main {
                 case 2:
                     System.out.println("enter code booking tour you want to edit");
                     int codeBookingTour;
-                    try{
+                    try {
                         codeBookingTour = scanner.nextInt();
-                    new BookingManager().edit(codeBookingTour);
-                    count =2;
-                    }catch (Exception e){
+                        new BookingManager().edit(codeBookingTour);
+                        count = 2;
+                    } catch (Exception e) {
                         System.out.println("Not Found");
                         menuBooking();
                     }
@@ -354,17 +370,17 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Booking report: ");
-                    new BookingManager().getBookingReport();
+                    System.out.println("Booking Report : " + new BookingManager().getBookingReport() + "$");
                     count = 3;
                     break;
                 case 5:
                     System.out.println("Enter code booking tour you want to search:");
                     int codebookingtourS;
-                    try{
+                    try {
                         codebookingtourS = scanner.nextInt();
-                    new BookingManager().searchBooking(codebookingtourS);
-                    count = 4;
-                    }catch (Exception e){
+                        new BookingManager().searchBooking(codebookingtourS);
+                        count = 4;
+                    } catch (Exception e) {
                         System.out.println("Not Found!");
                         menuBooking();
                     }
@@ -374,7 +390,7 @@ public class Main {
                     count = 5;
                     break;
                 case 7:
-                    BookingManager.bookingTourList= IOBooking.read();
+                    BookingManager.bookingTourList = IOBooking.read();
                     count = 5;
                     break;
                 case 8:
@@ -429,39 +445,39 @@ public class Main {
         new TourManager().display();
         System.out.println("Enter tour code you want to choose");
         int codeTour = 0;
-        try{
+        try {
             codeTour = scanner.nextInt();
-            boolean checkTourCode= false;
-            for (Tour tour: TourManager.tourList
-                 ) {
-                if(tour.getTourCode() == codeTour){
-                    checkTourCode= true;
+            boolean checkTourCode = false;
+            for (Tour tour : TourManager.tourList
+            ) {
+                if (tour.getTourCode() == codeTour) {
+                    checkTourCode = true;
                 }
             }
-            if(!checkTourCode){
+            if (!checkTourCode) {
                 System.out.println("Not Found !");
                 menuUser();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Not Found");
             menuUser();
         }
 
         int typeTour = 0;
-        boolean checkTypeTour= false;
-        do{
+        boolean checkTypeTour = false;
+        do {
             System.out.println("Please select tour type:");
-        System.out.println("1.Sic tour");
-        System.out.println("2.Private tour");
-        try{
-            typeTour = new Scanner(System.in).nextInt();
-            if(typeTour==1 || typeTour==2){
-                checkTypeTour= true;
+            System.out.println("1.Sic tour");
+            System.out.println("2.Private tour");
+            try {
+                typeTour = new Scanner(System.in).nextInt();
+                if (typeTour == 1 || typeTour == 2) {
+                    checkTypeTour = true;
+                }
+            } catch (Exception e) {
+                System.out.println("try enter your choose");
             }
-        }catch (Exception e){
-            System.out.println("try enter your choose");
-        }
-        }while (!checkTypeTour);
+        } while (!checkTypeTour);
 
 
         String date;
@@ -472,51 +488,51 @@ public class Main {
             checkDate = Main.checkValidate(date);
         } while (!checkDate);
 
-        int adults=0 ;
+        int adults = 0;
         boolean checkAdults = false;
-        do{
-        System.out.println("Enter number of adults");
-        try{
-            adults = new Scanner(System.in).nextInt();
-            if(adults>0){
-                checkAdults= true;
+        do {
+            System.out.println("Enter number of adults");
+            try {
+                adults = new Scanner(System.in).nextInt();
+                if (adults > 0) {
+                    checkAdults = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Try Enter number of adults");
             }
-        }catch (Exception e){
-            System.out.println("Try Enter number of adults");
-        }
-        }while (!checkAdults);
+        } while (!checkAdults);
 
         double price = new TourManager().getPricePerPax(codeTour, typeTour, date, adults) * adults;
         System.out.println("price for " + adults + " is " + price + "$");
 
-        int children=0;
-        boolean checkChildren= false;
-        do{
+        int children = 0;
+        boolean checkChildren = false;
+        do {
             System.out.println("if you have any children 4-11 years old (<4 years old: free),please input here!");
-        try{
-            children = new Scanner(System.in).nextInt();
-            if(children>0){
-                checkChildren= true;
+            try {
+                children = new Scanner(System.in).nextInt();
+                if (children > 0) {
+                    checkChildren = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Try enter number of children:");
             }
-        }catch (Exception e){
-            System.out.println("Try enter number of children:");
-        }
-        }while (!checkChildren);
+        } while (!checkChildren);
         System.out.println("04 - 11 years old : 75% adult rate");
 
-        int special=0;
-        boolean checkSpecial= false;
-        do{
-        System.out.println("if you have a special(old person or people with disabilities,please input here!");
-        try{
-            special = new Scanner(System.in).nextInt();
-         if(special>0){
-             checkSpecial= true;
-         }
-        }catch (Exception e){
-            System.out.println("Try enter number of special");
-        }
-        }while (!checkSpecial);
+        int special = 0;
+        boolean checkSpecial = false;
+        do {
+            System.out.println("if you have a special(old person or people with disabilities,please input here!");
+            try {
+                special = new Scanner(System.in).nextInt();
+                if (special > 0) {
+                    checkSpecial = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Try enter number of special");
+            }
+        } while (!checkSpecial);
         System.out.println("special : 85% adult rate");
         scanner.nextLine();
 
@@ -539,11 +555,11 @@ public class Main {
         String email;
         boolean checkPhone = false;
         String phone;
-        do{
-        System.out.println("Enter your phone");
-        phone = scanner.nextLine();
-            checkPhone= Main.checkValidatePhone(phone);
-        }while (!checkPhone);
+        do {
+            System.out.println("Enter your phone");
+            phone = scanner.nextLine();
+            checkPhone = Main.checkValidatePhone(phone);
+        } while (!checkPhone);
 
         boolean checkEmail;
         do {
@@ -560,14 +576,125 @@ public class Main {
         double priceTotalBooking = BookingManager.priceTotalBooking(price, adults, children, special);
         BookingTour bookingTour = new BookingTour(codeBooking, date, new TourManager().getTourName(codeTour), customerName,
                 customerAddress, phone, email, adults, children, special, date,
-                 priceTotalBooking, statusBooking);
+                priceTotalBooking, statusBooking);
         new BookingManager().add(bookingTour);
         IOBooking.save(BookingManager.bookingTourList);
     }
 
-    public static void main(String[] args) {
-        menuAdmin();
-        menuUser();
+    public static void loginMenu() {
+        System.out.println("=================WELCOME TO VIET NAM TRAVEL !!! ================= ");
+        System.out.println("1. Login ");
+        System.out.println("2. Create account ");
+        System.out.println(" Enter your choose: ");
+        int choose = 0;
+        boolean checkLogin = false;
+        try {
+            choose = new Scanner(System.in).nextInt();
+            if (choose == 1 || choose == 2 ) {
+                checkLogin = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Try enter your choose:");
+            loginMenu();
+        }
+        switch (choose) {
+            case 1:
+                AccountManager.adminMap = IOAdminAccount.read();
+                AccountManager.userMap = IOUserAccoount.read();
+                login();
+                break;
+            case 2:
+                AccountManager.userMap = IOUserAccoount.read();
+                createAccount();
+                IOAdminAccount.save(AccountManager.userMap);
+                menuUser();
+                break;
+            default:
+                System.out.println("Try enter your choose:");
+                loginMenu();
+        }
     }
-}
+
+    private static void createAccount() {
+        String nameAccount;
+        boolean checkNmame=false;
+        do {
+            System.out.println("Enter name account:");
+            nameAccount = new Scanner(System.in).nextLine();
+            checkNmame=checkValidateName(nameAccount);
+        }while (!checkNmame);
+        if(AccountManager.userMap.containsKey(nameAccount)){
+            createAccount();
+        }
+        String password = null;
+        boolean checkpass= false;
+        do{
+        System.out.println("Enter password:(a digit must occur at least once, a lower case letter must occur at least once,\" +\n" +
+                "                    \" an upper case letter must occur at least once, a special character must occur at least once,\" +\n" +
+                "                    \" no whitespace allowed in the entire string,at least 8 characters)");
+        password = new Scanner(System.in).nextLine();
+         checkpass = checkValidatePass(password);
+        }while (!checkpass);
+
+        AccountManager.userMap.put(nameAccount,password);
+        System.out.println("Create Account Success !");
+    }
+
+    private static void login() {
+        boolean checklogin= false;
+        do{
+        System.out.println("enter name account");
+        String nameAccount = new Scanner(System.in).nextLine();
+
+        if (AccountManager.adminMap.containsKey(nameAccount)) {
+            boolean checkPassWord= false;
+            do{
+            System.out.println("enter password");
+            String password = new Scanner(System.in).nextLine();
+            String truePass = AccountManager.adminMap.get(nameAccount);
+            if (truePass.equals(password)) {
+                checkPassWord=true;
+                menuAdmin();
+            } else
+                System.out.println("Wrong password !" +
+                        "\n" + "Please re-enter your password");
+            }while (!checkPassWord);
+            checklogin= true;
+        } else {
+            if (AccountManager.userMap.containsKey(nameAccount)) {
+                boolean checkPassWord = false;
+                do{
+                    System.out.println("enter password");
+                    String password = new Scanner(System.in).nextLine();
+                    String truePass = AccountManager.userMap.get(nameAccount);
+                    if (truePass.equals(password)) {
+                        checkPassWord=true;
+                        menuUser();
+                    } else
+                        System.out.println("Wrong password !" +
+                                "\n" + "Please re-enter your password");
+
+                }while (!checkPassWord);
+                checklogin= true;
+            } else {
+                System.out.println(" Account does not exist !\n" +
+                        "Please re-enter!");
+            }
+        }
+        }while (!checklogin);
+    }
+
+        public static void main (String[]args){
+//            {
+//                AccountManager.adminMap.put("Admin", "Admin");
+//            IOAdminAccount.save(AccountManager.adminMap);
+//                AccountManager.userMap.put("toan", "1692");
+//                AccountManager.userMap.put("huyen", "3692");
+//            IOAdminAccount.save(AccountManager.userMap);
+//            }
+            loginMenu();
+//        menuAdmin();
+//        menuUser();
+        }
+    }
 

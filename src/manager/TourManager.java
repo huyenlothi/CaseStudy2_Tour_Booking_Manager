@@ -2,8 +2,7 @@ package manager;
 
 import main.Main;
 import model.Tour;
-import service.IManager;
-import service.ITourManager;
+import imanager.ITourManager;
 import storage.IOTour;
 
 import java.util.*;

@@ -2,8 +2,7 @@ package manager;
 
 import main.Main;
 import model.BookingTour;
-import service.IBookingManager;
-import service.IManager;
+import imanager.IBookingManager;
 import storage.IOBooking;
 
 import java.util.ArrayList;

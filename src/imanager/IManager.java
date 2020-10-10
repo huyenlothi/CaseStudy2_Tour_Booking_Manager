@@ -1,4 +1,4 @@
-package service;
+package imanager;
 
 public interface IManager<T> {
     abstract void add(T o);

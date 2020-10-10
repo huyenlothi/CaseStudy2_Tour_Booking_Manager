@@ -1,4 +1,4 @@
-package service;
+package imanager;
 
 import model.BookingTour;
 
