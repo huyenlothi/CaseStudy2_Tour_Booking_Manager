@@ -67,7 +67,7 @@ public class Main {
         return matcher.matches();
     }
 
-    private static double setTourPrivatePriceHighOver5() {
+    public static double setTourPrivatePriceHighOver5() {
         double tourPrivatePriceHighOver5;
         System.out.println("Enter Tour Private price over 5 Adult in High season ");
         try {
@@ -83,7 +83,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourPrivatePriceHigh15() {
+    public static double setTourPrivatePriceHigh15() {
         double tourPrivatePriceHigh15;
         System.out.println("Enter Tour Private price From 1- 5 Adult in High season ");
         try {
@@ -99,7 +99,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourPrivatePriceLowOver5() {
+    public static double setTourPrivatePriceLowOver5() {
         double tourPrivatePriceLowOver5;
         System.out.println("Enter Tour Private price over 5 Adult in Low season ");
         try {
@@ -115,7 +115,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourPrivatePriceLow15() {
+    public static double setTourPrivatePriceLow15() {
         double tourPrivatePriceLow15;
         System.out.println("Enter Tour Private price From 1- 5 Adult in Low season ");
         try {
@@ -131,7 +131,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourSicPriceHighOver5() {
+    public static double setTourSicPriceHighOver5() {
         double tourSicPriceHighOver5;
         System.out.println("Enter Tour SIC price over 5 Adult in High season ");
         try {
@@ -147,7 +147,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourSicPriceHigh15() {
+    public static double setTourSicPriceHigh15() {
         double tourSicPriceHight15;
         System.out.println("Enter Tour SIC price From 1 - 5 Adult in High season ");
         try {
@@ -163,7 +163,7 @@ public class Main {
         return 0;
     }
 
-    private static double setTourSicPriceLowOver5() {
+    public static double setTourSicPriceLowOver5() {
         double tourSicPriceLowOver5;
         System.out.println("Enter Tour SIC price over 5 Adult in Low season ");
         try {
@@ -180,7 +180,7 @@ public class Main {
 
     }
 
-    private static double setTourSicPriceLow15() {
+    public static double setTourSicPriceLow15() {
         double tourSicPriceLow15;
         System.out.println("enter tour sic price low season 1-5 person:");
         try {
@@ -196,7 +196,7 @@ public class Main {
         return 0;
     }
 
-    private static int setTourTime() {
+    public static int setTourTime() {
         int tourTime;
         System.out.println("enter tour time");
         try {
@@ -229,13 +229,13 @@ public class Main {
             int chooseTour = 0;
             try {
                 chooseTour = scanner.nextInt();
-                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Try Enter Your Choose!");
                 j = 2;
             }
             switch (chooseTour) {
                 case 1: {
+                    scanner.nextLine();
                     System.out.println("Enter tour name:");
                     String tourName = scanner.nextLine();
                     int tourTime = setTourTime();
@@ -333,7 +333,6 @@ public class Main {
             int chooseBooking = 0;
             try {
                 chooseBooking = scanner.nextInt();
-                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Try enter your choose!");
                 count = 2;
@@ -374,16 +373,16 @@ public class Main {
                     count = 3;
                     break;
                 case 5:
-                    System.out.println("Enter code booking tour you want to search:");
-                    int codebookingtourS;
-                    try {
-                        codebookingtourS = scanner.nextInt();
-                        new BookingManager().searchBooking(codebookingtourS);
-                        count = 4;
-                    } catch (Exception e) {
-                        System.out.println("Not Found!");
-                        menuBooking();
-                    }
+                    int codebookingtour;
+                        System.out.println("Enter code booking tour you want to search:");
+                        try {
+                            codebookingtour = scanner.nextInt();
+                            new BookingManager().searchBooking(codebookingtour);
+                            menuBooking();
+                        } catch (Exception e) {
+                            System.out.println("Not Found!");
+                            menuBooking();
+                        }
                     break;
                 case 6:
                     IOBooking.save(BookingManager.bookingTourList);
@@ -396,6 +395,7 @@ public class Main {
                 case 8:
                     System.out.println("Welcome back to main menu !");
                     count = 7;
+                    menuAdmin();
                 default:
                     System.out.println("Try Enter Your choose");
                     menuBooking();
@@ -511,7 +511,7 @@ public class Main {
             System.out.println("if you have any children 4-11 years old (<4 years old: free),please input here!");
             try {
                 children = new Scanner(System.in).nextInt();
-                if (children > 0) {
+                if (children >= 0) {
                     checkChildren = true;
                 }
             } catch (Exception e) {
@@ -526,7 +526,7 @@ public class Main {
             System.out.println("if you have a special(old person or people with disabilities,please input here!");
             try {
                 special = new Scanner(System.in).nextInt();
-                if (special > 0) {
+                if (special >= 0) {
                     checkSpecial = true;
                 }
             } catch (Exception e) {
@@ -536,15 +536,52 @@ public class Main {
         System.out.println("special : 85% adult rate");
         scanner.nextLine();
 
-        System.out.println("============ Booking Sumary ========== ");
-        System.out.println("Tour Name: " + new TourManager().getTourName(codeTour));
-        System.out.println("Tour Type: " + new TourManager().getTourType(typeTour));
-        System.out.println("Departure date: " + date);
-        System.out.println("Number Adults: " + adults + " x " + price / adults + " = " + price + "$");
-        System.out.println("Number Children: " + children + "x" + 0.75 * price / adults + " = " + children * 0.75 * price / adults + "$");
-        System.out.println("Number Special: " + special + " x " + 0.85 * price / adults + " = " + special * 0.85 * price / adults + "$");
-        System.out.println("Price total booking: " + BookingManager.priceTotalBooking(price, adults, children, special) + "$");
-        System.out.println("====================== ");
+        double totalPriceBooking = BookingManager.priceTotalBooking(price, adults, children, special);
+
+        System.out.println("The total price for your booking is: " + totalPriceBooking + " $");
+        System.out.println("This is the price for 3 star hotel class, would you like to upgrade your hotel?");
+        System.out.println("1. I don't upgrade the hotel");
+        System.out.println("2. 4 star hotel");
+        System.out.println("3. 5 star hotel");
+
+        int hotel=0;
+        boolean checkHotel= false;
+        do{
+            System.out.println("Enter your choose:");
+            try{
+            hotel= new Scanner(System.in).nextInt();
+                if(hotel==1 || hotel ==2 || hotel ==3 || hotel ==4){
+                    checkHotel= true;
+                }
+            }catch (Exception e){
+                System.out.println("try enter your choose:");
+            }
+        }while (!checkHotel);
+        double total=0;
+        switch (hotel){
+            case 1:
+                total = totalPriceBooking;
+                break;
+            case 2:
+                total = totalPriceBooking+ 0.3*totalPriceBooking;
+                break;
+            case 3:
+                total = totalPriceBooking+ 0.5*totalPriceBooking;
+                break;
+
+        }
+
+        {
+            System.out.println("============ Booking Summary ========== ");
+            System.out.println("Tour Name: " + new TourManager().getTourName(codeTour));
+            System.out.println("Tour Type: " + new TourManager().getTourType(typeTour));
+            System.out.println("Departure date: " + date);
+            System.out.println("Number Adults: " + adults + " x " + price / adults + " = " + price + "$");
+            System.out.println("Number Children: " + children + "x" + 0.75 * price / adults + " = " + children * 0.75 * price / adults + "$");
+            System.out.println("Number Special: " + special + " x " + 0.85 * price / adults + " = " + special * 0.85 * price / adults + "$");
+            System.out.println("Price total booking: " + total + "$");
+            System.out.println("====================== ");
+        }
 
         System.out.println("If you want book this tour, please fill your information to here ");
         System.out.println("Enter your full name");
@@ -573,12 +610,12 @@ public class Main {
         int codeBooking = Main.autoBookingCode();
         boolean statusBooking = false;
 
-        double priceTotalBooking = BookingManager.priceTotalBooking(price, adults, children, special);
         BookingTour bookingTour = new BookingTour(codeBooking, date, new TourManager().getTourName(codeTour), customerName,
                 customerAddress, phone, email, adults, children, special, date,
-                priceTotalBooking, statusBooking);
+                total, statusBooking);
         new BookingManager().add(bookingTour);
         IOBooking.save(BookingManager.bookingTourList);
+
     }
 
     public static void loginMenu() {
@@ -637,6 +674,7 @@ public class Main {
         }while (!checkpass);
 
         AccountManager.userMap.put(nameAccount,password);
+        IOUserAccoount.save(AccountManager.userMap);
         System.out.println("Create Account Success !");
     }
 
@@ -685,16 +723,14 @@ public class Main {
     }
 
         public static void main (String[]args){
-//            {
-//                AccountManager.adminMap.put("Admin", "Admin");
-//            IOAdminAccount.save(AccountManager.adminMap);
-//                AccountManager.userMap.put("toan", "1692");
-//                AccountManager.userMap.put("huyen", "3692");
-//            IOAdminAccount.save(AccountManager.userMap);
-//            }
+            {
+                AccountManager.adminMap.put("Admin", "Admin");
+            IOAdminAccount.save(AccountManager.adminMap);
+                AccountManager.userMap.put("toan", "1692");
+                AccountManager.userMap.put("huyen", "3692");
+            IOUserAccoount.save(AccountManager.userMap);
+            }
             loginMenu();
-//        menuAdmin();
-//        menuUser();
         }
     }
 

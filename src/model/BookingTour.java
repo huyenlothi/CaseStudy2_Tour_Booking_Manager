@@ -17,7 +17,9 @@ public class BookingTour implements Serializable {
     private double totalBooking;
     private boolean statusBooking = true;
 
-    public BookingTour(int codeBooking, String tourDate, String tourName, String customerName, String customerAddress, String phone, String email, int adults, int children, int special, String cheekInDate, double totalBooking, boolean statusBooking) {
+    public BookingTour(int codeBooking, String tourDate, String tourName, String customerName, String customerAddress,
+                       String phone, String email, int adults, int children, int special, String cheekInDate,
+                       double totalBooking, boolean statusBooking) {
         this.codeBooking = codeBooking;
         this.tourDate = tourDate;
         this.tourName = tourName;

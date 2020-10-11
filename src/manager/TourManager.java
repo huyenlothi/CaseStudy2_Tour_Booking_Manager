@@ -148,8 +148,7 @@ public static List<Tour> tourList = new ArrayList<>();
                             i = 2;
                             break;
                         case 2:
-                            System.out.println("enter new tour time");
-                            int tourTime = scanner.nextInt();
+                            int tourTime = Main.setTourTime();
                             scanner.nextLine();
                             tour.setTourTime(tourTime);
                             i = 3;
@@ -167,50 +166,42 @@ public static List<Tour> tourList = new ArrayList<>();
                             i = 5;
                             break;
                         case 5:
-                            System.out.println("Enter Tour SIC new price From 1 - 5 Adult in Low season ");
-                            double tourSicPriceLow15 = scanner.nextDouble();
+                            double tourSicPriceLow15 = Main.setTourSicPriceLow15();
                             tour.setTourSicPriceLow15(tourSicPriceLow15);
                             i=6;
                             break;
                         case 6:
-                            System.out.println("Enter Tour SIC new price over 5 Adult in Low season ");
-                            double tourSicPriceLowOver5 = scanner.nextDouble();
+                            double tourSicPriceLowOver5 = Main.setTourSicPriceLowOver5();
                             tour.setTourSicPriceLow15(tourSicPriceLowOver5);
                             i=7;
                             break;
                         case 7:
-                            System.out.println("Enter Tour SIC new price From 1 - 5 Adult in High season ");
-                            double tourSicPriceHight15 = scanner.nextDouble();
+                            double tourSicPriceHight15 = Main.setTourSicPriceHigh15();
                             tour.setTourSicPriceHigh15(tourSicPriceHight15);
                             i=8;
                             break;
                         case 8:
-                            System.out.println("Enter Tour SIC new price over 5 Adult in High season ");
-                            double tourSicPriceHightOver5 = scanner.nextDouble();
+                            double tourSicPriceHightOver5 =Main.setTourSicPriceHighOver5();
                             tour.setTourSicPriceHighOver5(tourSicPriceHightOver5);
                             i=9;
                             break;
                         case 9:
-                            System.out.println("Enter Tour Private new price From 1- 5 Adult in Low season ");
-                            double tourPrivatePriceLow15 = scanner.nextDouble();
+                            double tourPrivatePriceLow15 = Main.setTourPrivatePriceLow15();
                             tour.setTourPrivatePriceLow15(tourPrivatePriceLow15);
                             i= 10;
                             break;
                         case 10:
-                            System.out.println("Enter Tour Private new price over 5 Adult in Low season ");
-                            double tourPrivatePriceLowOver5 = scanner.nextDouble();
+                            double tourPrivatePriceLowOver5 = Main.setTourPrivatePriceLowOver5();
                             tour.setTourPrivatePriceLowOver5(tourPrivatePriceLowOver5);
                             i=11;
                             break;
                         case 11:
-                            System.out.println("Enter Tour Private new price From 1- 5 Adult in High season ");
-                            double tourPrivatePriceHight15 = scanner.nextDouble();
+                            double tourPrivatePriceHight15 = Main.setTourPrivatePriceHigh15();
                             tour.setTourPrivatePriceHigh15(tourPrivatePriceHight15);
                             i=12;
                             break;
                         case 12:
-                            System.out.println("Enter Tour Private new price over 5 Adult in High season ");
-                            double tourPrivatePriceHightOver5 = scanner.nextDouble();
+                            double tourPrivatePriceHightOver5 = Main.setTourPrivatePriceHighOver5();
                             tour.setTourPrivatePriceHighOver5(tourPrivatePriceHightOver5);
                             i=13;
                             break;

@@ -28,11 +28,16 @@ public class BookingManager implements IBookingManager {
 
     @Override
     public void searchBooking(int codeBooking) {
+        String result = null;
         for (BookingTour bookingTour: bookingTourList
         ) {
             if(bookingTour.getCodeBooking() == (codeBooking)){
-                System.out.println(bookingTour.toString());
+                result = bookingTour.toString();
+                System.out.println(result);
             }
+        }
+        if (result== null){
+            System.out.println("Not found!");
         }
     }
 
@@ -50,6 +55,7 @@ public class BookingManager implements IBookingManager {
              ) {
             if(bookingTour.getCodeBooking() == codeBooking){
                 bookingTour.setStatusBooking(true);
+                System.out.println(bookingTour.toString());
                 System.out.println("Status Booking was update ! ");
             }
         }
