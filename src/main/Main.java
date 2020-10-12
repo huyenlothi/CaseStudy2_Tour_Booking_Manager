@@ -11,7 +11,9 @@ import storage.IOTour;
 import storage.IOUserAccoount;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -374,15 +376,15 @@ public class Main {
                     break;
                 case 5:
                     int codebookingtour;
-                        System.out.println("Enter code booking tour you want to search:");
-                        try {
-                            codebookingtour = scanner.nextInt();
-                            new BookingManager().searchBooking(codebookingtour);
-                            menuBooking();
-                        } catch (Exception e) {
-                            System.out.println("Not Found!");
-                            menuBooking();
-                        }
+                    System.out.println("Enter code booking tour you want to search:");
+                    try {
+                        codebookingtour = scanner.nextInt();
+                        new BookingManager().searchBooking(codebookingtour);
+                        menuBooking();
+                    } catch (Exception e) {
+                        System.out.println("Not Found!");
+                        menuBooking();
+                    }
                     break;
                 case 6:
                     IOBooking.save(BookingManager.bookingTourList);
@@ -544,29 +546,29 @@ public class Main {
         System.out.println("2. 4 star hotel");
         System.out.println("3. 5 star hotel");
 
-        int hotel=0;
-        boolean checkHotel= false;
-        do{
+        int hotel = 0;
+        boolean checkHotel = false;
+        do {
             System.out.println("Enter your choose:");
-            try{
-            hotel= new Scanner(System.in).nextInt();
-                if(hotel==1 || hotel ==2 || hotel ==3 || hotel ==4){
-                    checkHotel= true;
+            try {
+                hotel = new Scanner(System.in).nextInt();
+                if (hotel == 1 || hotel == 2 || hotel == 3 || hotel == 4) {
+                    checkHotel = true;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("try enter your choose:");
             }
-        }while (!checkHotel);
-        double total=0;
-        switch (hotel){
+        } while (!checkHotel);
+        double total = 0;
+        switch (hotel) {
             case 1:
                 total = totalPriceBooking;
                 break;
             case 2:
-                total = totalPriceBooking+ 0.3*totalPriceBooking;
+                total = totalPriceBooking + 0.3 * totalPriceBooking;
                 break;
             case 3:
-                total = totalPriceBooking+ 0.5*totalPriceBooking;
+                total = totalPriceBooking + 0.5 * totalPriceBooking;
                 break;
 
         }
@@ -627,7 +629,7 @@ public class Main {
         boolean checkLogin = false;
         try {
             choose = new Scanner(System.in).nextInt();
-            if (choose == 1 || choose == 2 ) {
+            if (choose == 1 || choose == 2) {
                 checkLogin = true;
             }
         } catch (Exception e) {
@@ -643,7 +645,6 @@ public class Main {
             case 2:
                 AccountManager.userMap = IOUserAccoount.read();
                 createAccount();
-                IOAdminAccount.save(AccountManager.userMap);
                 menuUser();
                 break;
             default:
@@ -654,83 +655,78 @@ public class Main {
 
     private static void createAccount() {
         String nameAccount;
-        boolean checkNmame=false;
+        boolean checkNmame = false;
         do {
             System.out.println("Enter name account:");
             nameAccount = new Scanner(System.in).nextLine();
-            checkNmame=checkValidateName(nameAccount);
-        }while (!checkNmame);
-        if(AccountManager.userMap.containsKey(nameAccount)){
+            checkNmame = checkValidateName(nameAccount);
+        } while (!checkNmame);
+        if (AccountManager.userMap.containsKey(nameAccount)) {
             createAccount();
         }
         String password = null;
-        boolean checkpass= false;
-        do{
-        System.out.println("Enter password:(a digit must occur at least once, a lower case letter must occur at least once,\" +\n" +
-                "                    \" an upper case letter must occur at least once, a special character must occur at least once,\" +\n" +
-                "                    \" no whitespace allowed in the entire string,at least 8 characters)");
-        password = new Scanner(System.in).nextLine();
-         checkpass = checkValidatePass(password);
-        }while (!checkpass);
+        boolean checkpass = false;
+        do {
+            System.out.println("Enter password:(a digit must occur at least once, a lower case letter must occur at least once,\" +\n" +
+                    "                    \" an upper case letter must occur at least once, a special character must occur at least once,\" +\n" +
+                    "                    \" no whitespace allowed in the entire string,at least 8 characters)");
+            password = new Scanner(System.in).nextLine();
+            checkpass = checkValidatePass(password);
+        } while (!checkpass);
 
-        AccountManager.userMap.put(nameAccount,password);
+        AccountManager.userMap.put(nameAccount, password);
         IOUserAccoount.save(AccountManager.userMap);
+
         System.out.println("Create Account Success !");
     }
 
     private static void login() {
-        boolean checklogin= false;
-        do{
-        System.out.println("enter name account");
-        String nameAccount = new Scanner(System.in).nextLine();
+        boolean checklogin = false;
+        do {
+            System.out.println("enter name account");
+            String nameAccount = new Scanner(System.in).nextLine();
 
-        if (AccountManager.adminMap.containsKey(nameAccount)) {
-            boolean checkPassWord= false;
-            do{
-            System.out.println("enter password");
-            String password = new Scanner(System.in).nextLine();
-            String truePass = AccountManager.adminMap.get(nameAccount);
-            if (truePass.equals(password)) {
-                checkPassWord=true;
-                menuAdmin();
-            } else
-                System.out.println("Wrong password !" +
-                        "\n" + "Please re-enter your password");
-            }while (!checkPassWord);
-            checklogin= true;
-        } else {
-            if (AccountManager.userMap.containsKey(nameAccount)) {
+            if (AccountManager.adminMap.containsKey(nameAccount)) {
                 boolean checkPassWord = false;
-                do{
+                do {
                     System.out.println("enter password");
                     String password = new Scanner(System.in).nextLine();
-                    String truePass = AccountManager.userMap.get(nameAccount);
+                    String truePass = AccountManager.adminMap.get(nameAccount);
                     if (truePass.equals(password)) {
-                        checkPassWord=true;
-                        menuUser();
+                        checkPassWord = true;
+                        menuAdmin();
                     } else
                         System.out.println("Wrong password !" +
                                 "\n" + "Please re-enter your password");
-
-                }while (!checkPassWord);
-                checklogin= true;
+                } while (!checkPassWord);
+                checklogin = true;
             } else {
-                System.out.println(" Account does not exist !\n" +
-                        "Please re-enter!");
+                if (AccountManager.userMap.containsKey(nameAccount)) {
+                    boolean checkPassWord = false;
+                    do {
+                        System.out.println("enter password");
+                        String password = new Scanner(System.in).nextLine();
+                        String truePass = AccountManager.userMap.get(nameAccount);
+                        if (truePass.equals(password)) {
+                            checkPassWord = true;
+                            menuUser();
+                        } else
+                            System.out.println("Wrong password !" +
+                                    "\n" + "Please re-enter your password");
+
+                    } while (!checkPassWord);
+                    checklogin = true;
+                } else {
+                    System.out.println(" Account does not exist !\n" +
+                            "Please re-enter!");
+                }
             }
-        }
-        }while (!checklogin);
+        } while (!checklogin);
     }
 
-        public static void main (String[]args){
-            {
-                AccountManager.adminMap.put("Admin", "Admin");
-            IOAdminAccount.save(AccountManager.adminMap);
-                AccountManager.userMap.put("toan", "1692");
-                AccountManager.userMap.put("huyen", "3692");
-            IOUserAccoount.save(AccountManager.userMap);
-            }
-            loginMenu();
-        }
+    public static void main(String[] args) {
+
+        loginMenu();
     }
+}
 
