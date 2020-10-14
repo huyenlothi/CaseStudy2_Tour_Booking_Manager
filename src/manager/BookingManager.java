@@ -63,14 +63,18 @@ public class BookingManager implements IBookingManager {
 
     @Override
     public void remove(int codeBooking) {
+        boolean checkbooking= false;
         for (BookingTour bookingTour: bookingTourList
         ) {
             if(bookingTour.getCodeBooking() == (codeBooking)){
                 bookingTourList.remove(bookingTour);
-            }else {
-                System.out.println("Not found!");
-                Main.menuBooking();
+                checkbooking= true;
+                System.out.println("Remove Successful");
             }
+        }
+        if(!checkbooking){
+        System.out.println("Not found!");
+        Main.menuBooking();
         }
     }
 

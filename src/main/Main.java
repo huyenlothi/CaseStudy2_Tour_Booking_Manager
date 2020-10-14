@@ -348,7 +348,7 @@ public class Main {
                         new BookingManager().remove(codebooking);
                         count = 1;
                     } catch (Exception e) {
-                        System.out.println("Not Found!");
+                        System.out.println("Re enter !");
                         menuBooking();
                     }
                     break;
@@ -540,7 +540,7 @@ public class Main {
 
         double totalPriceBooking = BookingManager.priceTotalBooking(price, adults, children, special);
 
-        System.out.println("The total price for your booking is: " + totalPriceBooking + " $");
+        System.out.println("======>>>>> The total price for your booking is: " + totalPriceBooking + " $ \n ");
         System.out.println("This is the price for 3 star hotel class, would you like to upgrade your hotel?");
         System.out.println("1. I don't upgrade the hotel");
         System.out.println("2. 4 star hotel");
